@@ -16,10 +16,11 @@ long task and says "text me when it's done" - finish the task, then send.
    (success / failure + one decisive detail). Polish diacritics are
    transliterated to ASCII by the script; anything else non-ASCII is
    dropped, so prefer plain ASCII.
-2. Run:
+2. Run `send.sh` from this skill's base directory (Claude Code prints
+   "Base directory for this skill" when the skill loads):
 
 ```sh
-~/.claude/skills/sms-notify/send.sh "<message>"
+"<base directory>/send.sh" "<message>"
 ```
 
 3. Exit 0 and JSON with `"status": "QUEUE"` means sent - confirm to the

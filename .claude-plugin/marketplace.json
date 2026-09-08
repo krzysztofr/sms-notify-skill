@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "sms-notify-skill",
+  "description": "Marketplace for the sms-notify Claude Code plugin.",
+  "owner": { "name": "Krzysztof Rakowski", "url": "https://github.com/krzysztofr" },
+  "plugins": [
+    {
+      "name": "sms-notify",
+      "description": "Send yourself an SMS via smsapi.pl when you ask Claude Code to.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

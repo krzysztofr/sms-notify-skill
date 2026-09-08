@@ -17,12 +17,23 @@ in files.
 
 ## Installation
 
-1. Clone and symlink into Claude Code's skills directory:
+1. Install as a Claude Code plugin (the repo is its own marketplace):
+
+   ```sh
+   claude plugin marketplace add krzysztofr/sms-notify-skill
+   claude plugin install sms-notify@sms-notify-skill
+   ```
+
+   Update later with `claude plugin update sms-notify`.
+
+   Alternative for hacking on it - clone and symlink as a plain skill:
 
    ```sh
    git clone https://github.com/krzysztofr/sms-notify-skill.git ~/work/sms-notify-skill
-   ln -s ~/work/sms-notify-skill ~/.claude/skills/sms-notify
+   ln -s ~/work/sms-notify-skill/skills/sms-notify ~/.claude/skills/sms-notify
    ```
+
+   Do not use both at once or Claude sees the skill twice.
 
 2. Store the token and your phone number in the Keychain (values never touch
    disk in plaintext and are never shown to Claude):
@@ -34,15 +45,17 @@ in files.
 
    Phone number format: country code without `+`, e.g. `48501234567`.
 
-3. Set the sender name and prefix. Edit `FROM="Alert"` in `send.sh` to a
-   sender name verified in your smsapi.pl account (unverified accounts can
-   use `Test`). Every message starts with `PREFIX="Klaudiusz: "` - change or
-   empty it as you like.
+3. Set the sender name and prefix. Edit `FROM="Alert"` in
+   `skills/sms-notify/send.sh` to a sender name verified in your smsapi.pl
+   account (unverified accounts can use `Test`). Every message starts with
+   `PREFIX="Klaudiusz: "` - change or empty it as you like. Note: a plugin
+   install is overwritten on update, so for a permanent change fork the repo
+   or use the symlink install.
 
 4. Dry run (validates everything, sends nothing, uses no credits):
 
    ```sh
-   ~/.claude/skills/sms-notify/send.sh --test "hello"
+   "$(ls -d ~/.claude/plugins/cache/sms-notify-skill/sms-notify/*/ | tail -1)skills/sms-notify/send.sh" --test "hello"
    ```
 
    Expected: JSON with `"status": "QUEUE"` and exit code 0.
@@ -64,18 +77,17 @@ dashes/quotes to ASCII, drops any other non-ASCII characters and the GSM-7
 extension characters (`[]{}\^~|`, which cost two characters each), and cuts
 the result at 160 characters so it always fits in a single SMS part.
 
-Manual use:
-
-```sh
-~/.claude/skills/sms-notify/send.sh "deploy finished OK"
-```
+Manual use: run `skills/sms-notify/send.sh "deploy finished OK"` from wherever
+the plugin is installed.
 
 ## Files
 
-- `send.sh` - normalizes the message to a single ASCII SMS part, reads
+- `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` - plugin
+  and single-plugin marketplace manifests
+- `skills/sms-notify/SKILL.md` - instructions Claude Code follows
+- `skills/sms-notify/send.sh` - normalizes the message to a single ASCII SMS part, reads
   Keychain, POSTs to `https://api.smsapi.pl/sms.do`, prints the JSON
   response, exits non-zero on API error
-- `SKILL.md` - instructions Claude Code follows
 
 ## License
 
