@@ -34,8 +34,10 @@ in files.
 
    Phone number format: country code without `+`, e.g. `48501234567`.
 
-3. Set the sender name. Edit `FROM="Alert"` in `send.sh` to a sender name
-   verified in your smsapi.pl account. Unverified accounts can use `Test`.
+3. Set the sender name and prefix. Edit `FROM="Alert"` in `send.sh` to a
+   sender name verified in your smsapi.pl account (unverified accounts can
+   use `Test`). Every message starts with `PREFIX="Klaudiusz: "` - change or
+   empty it as you like.
 
 4. Dry run (validates everything, sends nothing, uses no credits):
 
@@ -53,9 +55,14 @@ In any Claude Code session:
 
 > run the full test suite and sms me when it's done
 
-Claude finishes the task, composes a message under 160 characters with the
-project name and the outcome, and runs `send.sh`. The skill fires only on an
-explicit request for an SMS / text message.
+Claude finishes the task, composes a short message with the project name and
+the outcome, and runs `send.sh`. The skill fires only on an explicit request
+for an SMS / text message.
+
+`send.sh` prepends the prefix, transliterates Polish letters and typographic
+dashes/quotes to ASCII, drops any other non-ASCII characters and the GSM-7
+extension characters (`[]{}\^~|`, which cost two characters each), and cuts
+the result at 160 characters so it always fits in a single SMS part.
 
 Manual use:
 
@@ -65,8 +72,9 @@ Manual use:
 
 ## Files
 
-- `send.sh` - reads Keychain, POSTs to `https://api.smsapi.pl/sms.do`,
-  prints the JSON response, exits non-zero on API error
+- `send.sh` - normalizes the message to a single ASCII SMS part, reads
+  Keychain, POSTs to `https://api.smsapi.pl/sms.do`, prints the JSON
+  response, exits non-zero on API error
 - `SKILL.md` - instructions Claude Code follows
 
 ## License
