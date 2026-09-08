@@ -4,7 +4,8 @@
 set -euo pipefail
 
 FROM="Alert"
-PREFIX="Klaudiusz: "
+# Prefix = project name: git repo root name, else current directory name.
+PROJECT=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
 MAXLEN=160   # one GSM-7 SMS part; we strip to plain ASCII so 160 applies
 TEST=0
 if [[ "${1:-}" == "--test" ]]; then TEST=1; shift; fi
@@ -14,7 +15,7 @@ MSG="${1:-}"
 # Transliterate Polish letters and typographic dashes/quotes, drop every other
 # non-ASCII char, drop GSM-7 extension chars (they cost 2 chars each), cap length.
 # ponytail: sed y-table covers Polish only; add rows if other languages show up
-MSG=$(printf '%s' "$PREFIX$MSG" \
+MSG=$(printf '%s' "$PROJECT: $MSG" \
   | LC_ALL=en_US.UTF-8 sed 'y/ąćęłńóśźżĄĆĘŁŃÓŚŹŻ—–“”„’/acelnoszzACELNOSZZ--"""'"'"'/' \
   | LC_ALL=C tr -cd ' -~' \
   | tr -d '[]{}\\^~|' \

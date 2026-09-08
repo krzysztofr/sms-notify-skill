@@ -45,12 +45,10 @@ in files.
 
    Phone number format: country code without `+`, e.g. `48501234567`.
 
-3. Set the sender name and prefix. Edit `FROM="Alert"` in
-   `skills/sms-notify/send.sh` to a sender name verified in your smsapi.pl
-   account (unverified accounts can use `Test`). Every message starts with
-   `PREFIX="Klaudiusz: "` - change or empty it as you like. Note: a plugin
-   install is overwritten on update, so for a permanent change fork the repo
-   or use the symlink install.
+3. Set the sender name. Edit `FROM="Alert"` in `skills/sms-notify/send.sh`
+   to a sender name verified in your smsapi.pl account (unverified accounts
+   can use `Test`). Note: a plugin install is overwritten on update, so for a
+   permanent change fork the repo or use the symlink install.
 
 4. Dry run (validates everything, sends nothing, uses no credits):
 
@@ -68,11 +66,13 @@ In any Claude Code session:
 
 > run the full test suite and sms me when it's done
 
-Claude finishes the task, composes a short message with the project name and
-the outcome, and runs `send.sh`. The skill fires only on an explicit request
+Claude finishes the task, composes a short message with the outcome, and runs
+`send.sh`. Every message is prefixed with the project name: the git repo root
+directory name, or the current directory name outside git, e.g.
+`my-api: migration done, 0 errors`. The skill fires only on an explicit request
 for an SMS / text message.
 
-`send.sh` prepends the prefix, transliterates Polish letters and typographic
+`send.sh` prepends the project name, transliterates Polish letters and typographic
 dashes/quotes to ASCII, drops any other non-ASCII characters and the GSM-7
 extension characters (`[]{}\^~|`, which cost two characters each), and cuts
 the result at 160 characters so it always fits in a single SMS part.

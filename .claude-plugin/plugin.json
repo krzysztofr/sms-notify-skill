@@ -1,7 +1,7 @@
 {
   "name": "sms-notify",
   "description": "Send yourself an SMS via smsapi.pl when you ask Claude Code to - e.g. when a long task finishes and you are away from your desk.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": { "name": "Krzysztof Rakowski" },
   "license": "MIT",
   "homepage": "https://github.com/krzysztofr/sms-notify-skill"

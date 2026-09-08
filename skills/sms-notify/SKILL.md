@@ -10,9 +10,9 @@ long task and says "text me when it's done" - finish the task, then send.
 
 ## Send
 
-1. Compose the message: one line, plain text, max ~145 characters (the
-   script prepends `Klaudiusz: ` and hard-cuts at 160, so keep the important
-   part first). Include the project directory name and the outcome
+1. Compose the message: one line, plain text, max ~130 characters (the
+   script prepends `<project>: ` and hard-cuts at 160, so keep the important
+   part first). Do not repeat the project name; state the outcome
    (success / failure + one decisive detail). Polish diacritics are
    transliterated to ASCII by the script; anything else non-ASCII is
    dropped, so prefer plain ASCII.
@@ -37,7 +37,9 @@ no SMS sent, no credits used. Use it when verifying setup.
 
 - Recipient number, token: macOS Keychain items `smsapi-to`,
   `smsapi-token` (see README). Never print them.
-- Sender name (`Alert`) and message prefix (`Klaudiusz: `) are hardcoded
-  in `send.sh`. Sender must be a verified name in the smsapi.pl account.
+- Sender name (`Alert`) is hardcoded in `send.sh`; must be a verified name
+  in the smsapi.pl account.
+- Prefix is the project name: git repo root directory name, else the
+  current directory name. Run `send.sh` from the project directory.
 - One SMS per request. If the user asks for periodic texts, say no and
   offer a single summary text instead.
