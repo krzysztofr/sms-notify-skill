@@ -36,7 +36,8 @@ no SMS sent, no credits used. Use it when verifying setup.
 ## Notes
 
 - Recipient number, token: macOS Keychain items `smsapi-to`,
-  `smsapi-token` (see README). Never print them.
+  `smsapi-token` (see README). Never print them. The script already
+  redacts phone numbers from the API response.
 - Sender name (`Alert`) is hardcoded in `send.sh`; must be a verified name
   in the smsapi.pl account.
 - Prefix is the project name: git repo root directory name, else the
