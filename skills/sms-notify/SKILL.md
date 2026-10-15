@@ -1,6 +1,6 @@
 ---
 name: sms-notify
-description: Use ONLY when the user explicitly asks for an SMS / text message - "sms me", "text me", "send me an sms when done", "/sms-notify". Do NOT use for generic "notify me" or "remind me" - ask which channel if unclear.
+description: Use when the user asks for an SMS / text message - "sms me", "text me", "send me an sms when done", "/sms-notify" - or asks a generic "notify me..." that the user's own routing rules (CLAUDE.md) send to SMS. Without such rules, ask which channel for a generic "notify me". Do NOT use for "remind me..." requests - those belong to the user's task / reminder tool.
 ---
 
 # sms-notify
